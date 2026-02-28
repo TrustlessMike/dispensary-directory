@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Map, { Marker, Popup } from "react-map-gl";
+import Map, { Marker, Popup } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // Mapbox Token (Can be overridden in .env.local via NEXT_PUBLIC_MAPBOX_TOKEN)

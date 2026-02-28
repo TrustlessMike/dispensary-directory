@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "rm -rf node_modules/@types/mapbox__point-geometry"
   },
   "dependencies": {
     "apify-client": "^2.22.2",
@@ -18,9 +19,10 @@
     "react-map-gl": "^8.1.0"
   },
   "devDependencies": {
+    "@mapbox/point-geometry": "^1.1.0",
     "@prisma/client": "^6.19.2",
     "@tailwindcss/postcss": "^4",
-    "@types/mapbox-gl": "^3.4.1",
+    "@types/mapbox__point-geometry": "^1.0.86",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
