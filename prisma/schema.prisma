@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                        String   @id @default(cuid())
+  email                     String   @unique
+  name                      String?
+  referralCode              String   @unique
+  stripeConnectAccountId    String?
+  totalEarnings             Float    @default(0.0)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  referredDispensaries      Dispensary[]     @relation("ScoutDispensaries")
+  royaltyPayments           RoyaltyPayment[]
+}
+
+model Dispensary {
+  id                  String   @id @default(cuid())
+  name                String
+  licenseNumber       String
+  address             String?
+  latitude            Float?
+  longitude           Float?
+  verified            Boolean  @default(false)
+  lastMenuUpdateAt    DateTime?
+  scoutId             String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  scout               User?            @relation("ScoutDispensaries", fields: [scoutId], references: [id])
+  subscription        Subscription?
+  royaltyPayments     RoyaltyPayment[]
+}
+
+model Subscription {
+  id                     String   @id @default(cuid())
+  dispensaryId           String   @unique
+  stripeSubscriptionId   String?
+  status                 String?  // 'active', 'past_due', 'canceled'
+  monthlyFee             Float?
+  royaltyPercentage      Float    @default(15.0)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  dispensary             Dispensary @relation(fields: [dispensaryId], references: [id])
+}
+
+model RoyaltyPayment {
+  id                  String   @id @default(cuid())
+  scoutId             String
+  dispensaryId        String
+  amount              Float
+  status              String?  // 'pending', 'paid', 'failed'
+  paidAt              DateTime?
+  stripeTransferId    String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  scout               User       @relation(fields: [scoutId], references: [id])
+  dispensary          Dispensary @relation(fields: [dispensaryId], references: [id])
+}

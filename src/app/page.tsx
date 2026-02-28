@@ -1,65 +1,75 @@
-import Image from "next/image";
+import { prisma } from "@/lib/prisma";
+import MapClient from "@/components/MapClient";
 
-export default function Home() {
+export default async function Home() {
+  // Fetch dispensaries directly on the server for the map
+  const rawDispensaries = await prisma.dispensary.findMany({
+    select: {
+      id: true,
+      name: true,
+      licenseNumber: true,
+      address: true,
+      latitude: true,
+      longitude: true,
+      verified: true
+    }
+  });
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main>
+      <section className="hero">
+        <div className="blob blob-1"></div>
+        <div className="blob blob-2"></div>
+
+        <div className="hero-content container">
+          <div style={{ display: 'inline-block', padding: '0.5rem 1rem', background: 'rgba(0, 240, 255, 0.1)', border: '1px solid rgba(0, 240, 255, 0.2)', borderRadius: '100px', color: 'var(--color-primary)', marginBottom: '2rem', fontWeight: 600 }}>
+            🚀 The Scout Program is Live
+          </div>
+          <h1>The Industry's Most Accurate Directory. Built by You.</h1>
+          <p className="subtitle">
+            Say goodbye to outdated 2024 menus. Discover 100% verified dispensaries, legally compliant, and updated in real-time. Join the Scout Program and earn recurring royalties for every dispensary you bring.
           </p>
+
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+            <a href="/dashboard" className="btn btn-primary">
+              Become a Scout
+            </a>
+            <a href="#explore" className="btn btn-secondary">
+              Explore Map
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section id="explore" className="container" style={{ padding: '4rem 2rem', position: 'relative', zIndex: 10 }}>
+        <h2 style={{ textAlign: "center", marginBottom: "3rem" }}>
+          Live Map. <span style={{ color: 'var(--color-primary)' }}>Powered by Apify.</span>
+        </h2>
+
+        {/* Render the fully interactive Mapbox GL Client Component */}
+        <MapClient dispensaries={rawDispensaries} />
+
+        <div className="grid" style={{ marginTop: '4rem' }}>
+          <div className="glass-card">
+            <h3 style={{ color: 'var(--color-accent)' }}>✅ 100% Verified Menus</h3>
+            <p style={{ color: 'var(--color-text-muted)' }}>
+              We sync directly with dispensary inventory systems or use Apify to ensure data is updated daily. Outdated listings are purged.
+            </p>
+          </div>
+          <div className="glass-card">
+            <h3 style={{ color: 'var(--color-primary)' }}>💸 Scout Royalties</h3>
+            <p style={{ color: 'var(--color-text-muted)' }}>
+              Earn 10-15% of the monthly subscription fee for the lifetime of every dispensary you refer as a Scout.
+            </p>
+          </div>
+          <div className="glass-card">
+            <h3 style={{ color: '#F59E0B' }}>📜 2026 Compliant</h3>
+            <p style={{ color: 'var(--color-text-muted)' }}>
+              Age-gated, license-verified listings ensure peace of mind and strict adherence to the latest advertising standards.
+            </p>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
