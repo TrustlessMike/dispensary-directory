@@ -6,7 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 // Mapbox Token (Can be overridden in .env.local via NEXT_PUBLIC_MAPBOX_TOKEN)
 // This is a generic test token. Users should replace this!
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "YOUR_MAPBOX_TOKEN_HERE";
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 
 type Dispensary = {
     id: string;
@@ -36,9 +36,9 @@ export default function MapClient({ dispensaries }: { dispensaries: Dispensary[]
             )}
 
             {/* Mapbox component. The 'dark-v11' style fits the app aesthetic nicely. */}
-            {MAPBOX_TOKEN === "YOUR_MAPBOX_TOKEN_HERE" && (
+            {MAPBOX_TOKEN === "" && (
                 <div style={{ position: 'absolute', top: 10, left: 10, background: 'rgba(0,0,0,0.8)', padding: '10px', borderRadius: '8px', zIndex: 100, fontSize: '12px', color: '#ffcc00' }}>
-                    ⚠️ Using dummy Mapbox Token. View may be rate-limited. Update in .env.local
+                    ⚠️ Mapbox Token missing. Map disabled. Update NEXT_PUBLIC_MAPBOX_TOKEN in Vercel.
                 </div>
             )}
 
