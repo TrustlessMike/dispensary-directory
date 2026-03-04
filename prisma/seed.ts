@@ -27,6 +27,8 @@ async function main() {
             licenseNumber: 'L-2026-MI-991',
             address: '123 Main St, Ann Arbor, MI',
             verified: true,
+            latitude: 42.2808,
+            longitude: -83.7430,
             scoutId: scout.id,
             lastMenuUpdateAt: new Date(),
         }
@@ -37,6 +39,8 @@ async function main() {
             name: 'Elevate Provisioning',
             licenseNumber: 'L-2026-CA-042',
             address: '420 Higher Way, Los Angeles, CA',
+            latitude: 34.0522,
+            longitude: -118.2437,
             verified: true,
             scoutId: scout.id,
             lastMenuUpdateAt: new Date(Date.now() - 3600 * 1000 * 12), // 12 hours ago
